@@ -2,7 +2,6 @@ from guizero import App, Text
 from djitellopy import Tello
 from threading import Thread
 from ControllerInput import XboxController
-import numpy as np
 import cv2
 from PIL import Image, ImageTk
 import tkinter
