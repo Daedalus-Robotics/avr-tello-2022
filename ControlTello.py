@@ -30,41 +30,42 @@ def map(x: float or int,
 def telloloop():
     last_button_Y = 0
     while True:
+        try: 
+            if (controller.Y == 1) and not tello.is_flying and controller.Y != last_button_Y:
+                tello.takeoff()
+                
+            elif controller.A == 1:
+                tello.land()
+            last_button_Y = controller.Y
+            #tello control code
+            left_stick_y = controller.LeftJoystickY 
+            left_stick_x = controller.LeftJoystickX
+            right_stick_y = controller.RightJoystickY 
+            right_stick_x = controller.RightJoystickX 
 
-        if (controller.Y == 1) and not tello.is_flying and controller.Y != last_button_Y:
-            tello.takeoff()
+            up_down = int(map(left_stick_y, -1, 1, -100, 100))
+            yaw = int(map(left_stick_x, -1, 1, -100, 100))
+            forward_backward = int(map(right_stick_y, -1, 1, -100, 100))
+            left_right = int(map(right_stick_x, -1, 1, -100, 100))
+
+            tello.send_rc_control(left_right, forward_backward, up_down, yaw)
+
+            #GUI updating
+            mp = tello.get_mission_pad_id()
+            battery = tello.get_battery()
+            battery_text.value = f"Battery: {battery}%"
+            mission_pad_text.value = f"MP: {mp}"
+            #buttons_text.value = f"Buttons: {controller.read()}"
+
+            """#got_frame = True
+            got_frame, frame = drone_video_capture.read()
             
-        elif controller.A == 1:
-            tello.land()
-        last_button_Y = controller.Y
-        #tello control code
-        left_stick_y = controller.LeftJoystickY 
-        left_stick_x = controller.LeftJoystickX
-        right_stick_y = controller.RightJoystickY 
-        right_stick_x = controller.RightJoystickX 
-
-        up_down = int(map(left_stick_y, -1, 1, -100, 100))
-        yaw = int(map(left_stick_x, -1, 1, -100, 100))
-        forward_backward = int(map(right_stick_y, -1, 1, -100, 100))
-        left_right = int(map(right_stick_x, -1, 1, -100, 100))
-
-        tello.send_rc_control(left_right, forward_backward, up_down, yaw)
-
-        #GUI updating
-        mp = tello.get_mission_pad_id()
-        battery = tello.get_battery()
-        battery_text.value = f"Battery: {battery}%"
-        mission_pad_text.value = f"MP: {mp}"
-        #buttons_text.value = f"Buttons: {controller.read()}"
-
-        """#got_frame = True
-        got_frame, frame = drone_video_capture.read()
-        
-        if got_frame:
-            frame = ImageTk.PhotoImage(image=Image.fromarray(frame))
-            bottom_camera.imgtk = frame
-            bottom_camera.configure(image=frame)""" 
-        
+            if got_frame:
+                frame = ImageTk.PhotoImage(image=Image.fromarray(frame))
+                bottom_camera.imgtk = frame
+                bottom_camera.configure(image=frame)""" 
+        except:
+            pass
 
         pass
 
