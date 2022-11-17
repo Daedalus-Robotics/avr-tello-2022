@@ -25,29 +25,34 @@ def map(x: float or int,
         in_max: float or int,
         out_min: float or int,
         out_max: float or int) -> float or int:
+    """Maps input ranges to output ranges"""
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
 
 def telloloop():
     last_button_Y = 0
     while True:
         try: 
+            #Check for Inputs
             if (controller.Y == 1) and not tello.is_flying and controller.Y != last_button_Y:
                 tello.takeoff()
                 
             elif controller.A == 1:
                 tello.land()
             last_button_Y = controller.Y
-            #tello control code
+
+            #tJoystick Data
             left_stick_y = controller.LeftJoystickY 
             left_stick_x = controller.LeftJoystickX
             right_stick_y = controller.RightJoystickY 
             right_stick_x = controller.RightJoystickX 
 
+            #Map from Joystick values to Input Values
             up_down = int(map(left_stick_y, -1, 1, -100, 100))
             yaw = int(map(left_stick_x, -1, 1, -100, 100))
             forward_backward = int(map(right_stick_y, -1, 1, -100, 100))
             left_right = int(map(right_stick_x, -1, 1, -100, 100))
 
+            #Send Command to Tello
             tello.send_rc_control(left_right, forward_backward, up_down, yaw)
 
             #GUI updating
