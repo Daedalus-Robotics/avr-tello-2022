@@ -6,7 +6,7 @@ FIRESTATION_TO_FIRSTBUILDING_LATERAL = 35
 #Test values no y heights
 
 TEXTRON_TALL_Y = 20
-TEXTRON_MIDDLE_Y = 20
+TEXTRON_MIDDLE_Y = 40
 TEXTRON_SMALL_Y = 20
 
 #TEXTRON TOWERS y Values CM
@@ -45,7 +45,7 @@ def triangulate_small(t: Tello) -> tuple:
     z_dist = t.get_mission_pad_distance_z()
 
     id = t.get_mission_pad_id()
-    t.go_xyz_speed_mid(x=1, y=1, z=z_dist, speed=30, mid=id)
+    t.go_xyz_speed_mid(x=0, y=0, z=z_dist, speed=30, mid=id)
 
 def triangulate_tall(t: Tello) -> tuple:
     x_dist = t.get_mission_pad_distance_x()
