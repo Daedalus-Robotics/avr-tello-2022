@@ -1,9 +1,9 @@
 from djitellopy import Tello
-from ControllerInput import XboxController
+from resources.ControllerInput import XboxController
 from guizero import Text
 import time
 from threading import Lock
-from constants import *
+from resources.constants import *
 from threading import Thread, Lock
 
 is_auton = False

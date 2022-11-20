@@ -1,9 +1,9 @@
-from constants import * 
-from helper_functions import *
+from resources.constants import * 
+from resources.helper_functions import *
 from guizero import App, Text
 from djitellopy import Tello
 from threading import Thread, Lock
-from ControllerInput import XboxController
+from resources.ControllerInput import XboxController
 
 
 
