@@ -207,7 +207,7 @@ def residential(tello:Tello, mission_type:int, lock: Lock) -> None:
             
         else:
             tello.move_left(20)
-            loop_forward(40,4)
+            loop_forward(tello, 40,4)
 
 
         triangulate_small(tello)
