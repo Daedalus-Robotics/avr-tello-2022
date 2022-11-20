@@ -7,7 +7,13 @@ from resources.constants import *
 from threading import Thread, Lock
 
 is_auton = False
+side = "textron"
+m_type = 1
 
+def set_side(current: str) -> None:
+    global side
+
+    side = current
 
 def triangulate_small(t: Tello) -> tuple:
     x_dist = t.get_mission_pad_distance_x()
@@ -267,25 +273,48 @@ def residential(tello:Tello, mission_type:int, lock: Lock) -> None:
         is_auton = False
 
 
-def switch_status(tello: Tello, controller: XboxController, lock: Lock):
+def switch_status(tello: Tello, controller: XboxController, lock: Lock, auton_text: Text, mission_text: Text):
     """X to turn on, B to turn off"""
 
     global is_auton
-
+    global m_type
 
 
     while True:
         try: 
             #print(f"{controller.X}")
+            auton_text.value = f"Autonomous Mode: {is_auton}"
+            mission_text.value =f"mission: {m_type}"
+
+            left_pad = controller.LeftDPad
+            up_pad = controller.UpDPad
+            right_pad = controller.RightDPad
+
+            if left_pad == 1 and left_pad != last_button_LeftDPad and not is_auton:
+                m_type = 1
+            if up_pad == 1 and up_pad != last_button_UpDPad and not is_auton:
+                m_type = 2
+            if right_pad == 1 and right_pad != last_button_RightDPad and not is_auton:
+                m_type = 3
+
+
 
             if controller.X == 1 and controller.X != last_button_X and not is_auton:
                 #print("2")
                 is_auton = True
-                Thread(target=lambda: textron(tello, mission_type=1, lock=lock), daemon=True).start()
-            last_button_X = controller.X
+                if side=="textron":
+                    Thread(target=lambda: textron(tello, mission_type=m_type, lock=lock), daemon=True).start() 
+                elif side=="residential":
+                    Thread(target=lambda: residential(tello, mission_type=m_type, lock=lock), daemon=True).start() 
+            
             if controller.B == 1 and controller.B != last_button_B and  is_auton:
                 is_auton = False
+
+            last_button_LeftDPad = controller.LeftDPad
+            last_button_UpDPad = controller.UpDPad
+            last_button_RightDPad = controller.RightDPad
             last_button_B = controller.B
+            last_button_X = controller.X
         except:
             pass
 
