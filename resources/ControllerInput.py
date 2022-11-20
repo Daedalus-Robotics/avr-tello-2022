@@ -47,6 +47,7 @@ class XboxController(object):
     def _monitor_controller(self):
         while True:
             events = get_gamepad()
+    
             for event in events:
                 if event.code == 'ABS_Y':
                     self.LeftJoystickY = event.state / XboxController.MAX_JOY_VAL # normalize between -1 and 1
@@ -80,12 +81,13 @@ class XboxController(object):
                     self.Back = event.state
                 elif event.code == 'BTN_START':
                     self.Start = event.state
-                elif event.code == 'BTN_TRIGGER_HAPPY1':
-                    self.LeftDPad = event.state
-                elif event.code == 'BTN_TRIGGER_HAPPY2':
-                    self.RightDPad = event.state
-                elif event.code == 'BTN_TRIGGER_HAPPY3':
-                    self.UpDPad = event.state
-                elif event.code == 'BTN_TRIGGER_HAPPY4':
-                    self.DownDPad = event.state
+                elif event.code == 'ABS_HAT0X':
+                    self.LeftDPad = 1 if event.state==-1 else 0 
+                    self.RightDPad = 1 if event.state==1 else 0 
+                elif event.code == 'ABS_HAT0Y':
+                    self.UpDPad = 1 if event.state == -1 else 0
+                    self.DownDPad = 1 if event.state ==1 else 0
+    
+                #else:
+                    #print(f"code: {event.code}. value: {event.state}")
 

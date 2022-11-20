@@ -85,16 +85,17 @@ def textron(tello: Tello, mission_type: int, lock: Lock) -> None:
 
 
         if(mission_type==1):
-            tello.rotate_clockwise(45)
+            tello.rotate_clockwise(58)
             loop_forward(tello, 40, 4)
             if not is_auton:
                 return
-            tello.rotate_counter_clockwise(45) #Above second pad
+            tello.rotate_counter_clockwise(58) #Above second pad
             if not is_auton:
                 return
             
         else:
-            tello.move_forward(40,4)
+            tello.move_left(20)
+            loop_forward(tello, 40,4)
             if not is_auton:
                 return
 
@@ -198,14 +199,16 @@ def residential(tello:Tello, mission_type:int, lock: Lock) -> None:
 
 
         if(mission_type==1):
-            tello.rotate_clockwise(45)
+            tello.rotate_clockwise(55)
             loop_forward(tello, 40, 4)
-            tello.rotate_counter_clockwise(45) #Above second pad
+            tello.rotate_counter_clockwise(55) #Above second pad
             if not is_auton:
                 return
             
         else:
-            tello.move_forward(40,4)
+            tello.move_left(20)
+            loop_forward(40,4)
+
 
         triangulate_small(tello)
         if not is_auton:
@@ -287,6 +290,7 @@ def switch_status(tello: Tello, controller: XboxController, lock: Lock, auton_te
             mission_text.value =f"mission: {m_type}"
 
             left_pad = controller.LeftDPad
+            #print(left_pad)
             up_pad = controller.UpDPad
             right_pad = controller.RightDPad
 

@@ -23,7 +23,7 @@ tellolock = Lock()
 
 tellocontrolthread = Thread(target=lambda: tellocontrolloop(tello, controller, tellolock), daemon=True)
 telloupdatethread = Thread(target=lambda: telloupdateloop(tello, battery_text, mission_pad_text), daemon=True)
-tellostatusthread = Thread(target=lambda: switch_status(tello, controller, tellolock, autonomous_text), daemon=True)
+tellostatusthread = Thread(target=lambda: switch_status(tello, controller, tellolock, autonomous_text, mission_text), daemon=True)
 
 tello.connect()
 tello.set_mission_pad_detection_direction(0)
