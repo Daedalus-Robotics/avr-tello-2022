@@ -1,0 +1,114 @@
+[33mcommit 73c3f969eefb5791dde8584e3ab14013d7726945[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m
+Author: Arya Lohia <96156566+a-lohia@users.noreply.github.com>
+Date:   Sun Nov 20 19:14:22 2022 -0500
+
+    changed constants
+
+[33mcommit 7f9fb49b12dc8b532d3512787c0dd780b639db9d[m
+Author: Arya Lohia <96156566+a-lohia@users.noreply.github.com>
+Date:   Sun Nov 20 14:00:35 2022 -0500
+
+    heightsfix
+
+[33mcommit 80bbc43945ccab7e7477787987da47aa271e7c1c[m
+Author: Arya Lohia <96156566+a-lohia@users.noreply.github.com>
+Date:   Sun Nov 20 13:25:22 2022 -0500
+
+    bugfix v2
+
+[33mcommit 18f337c780a34f480b16c6fadd8959241bb8f104[m
+Author: Arya Lohia <96156566+a-lohia@users.noreply.github.com>
+Date:   Sun Nov 20 11:51:05 2022 -0500
+
+    bugfix
+
+[33mcommit 6ffc2768f82dbb73217669b74aed8e66f156bb29[m
+Merge: 865c344 16603e3
+Author: Arya Lohia <96156566+a-lohia@users.noreply.github.com>
+Date:   Sun Nov 20 08:53:56 2022 -0500
+
+    Merge branch 'master' of github.com:Daedalus-Robotics/avr-tello-2022
+
+[33mcommit 865c3445fbc64bb7aa9bc1691d528885b2360a52[m
+Author: Arya Lohia <96156566+a-lohia@users.noreply.github.com>
+Date:   Sun Nov 20 08:53:30 2022 -0500
+
+    gui support to change mission
+
+[33mcommit 16603e39cf6f4c15a91b59bce9306861290aedc2[m
+Author: Arya Lohia <96156566+a-lohia@users.noreply.github.com>
+Date:   Sat Nov 19 23:47:47 2022 -0500
+
+    Update README.md
+
+[33mcommit 5a6023effd5ec6b81288937b7def8703d951dd62[m
+Author: Arya Lohia <96156566+a-lohia@users.noreply.github.com>
+Date:   Sat Nov 19 23:14:52 2022 -0500
+
+    fix file system
+
+[33mcommit f94d77435429510c614b8aeeeb6d8d92cb69a937[m
+Author: Arya Lohia <96156566+a-lohia@users.noreply.github.com>
+Date:   Sat Nov 19 22:55:31 2022 -0500
+
+    auton-support
+
+[33mcommit 41fa45ac6f08d6b6a80037c07f47b1a1fd4cfb52[m
+Author: Arya Lohia <96156566+a-lohia@users.noreply.github.com>
+Date:   Sat Nov 19 21:10:44 2022 -0500
+
+    autonomous and land in one file if nothing works
+
+[33mcommit 617eb410edba207171b306f38f2d19c7cc079586[m
+Author: Arya Lohia <96156566+a-lohia@users.noreply.github.com>
+Date:   Sat Nov 19 21:07:05 2022 -0500
+
+    working 11/19
+
+[33mcommit 174743466dee254f8c16cb36cdf9466d59358acc[m
+Author: Arya Lohia <96156566+a-lohia@users.noreply.github.com>
+Date:   Sat Nov 19 12:54:42 2022 -0500
+
+    V2
+
+[33mcommit e42e7a2717ec8538c3a7628ded96dff8cd30e50d[m
+Author: Arya Lohia <96156566+a-lohia@users.noreply.github.com>
+Date:   Sat Nov 19 11:43:03 2022 -0500
+
+    update name
+
+[33mcommit ecee501cf4598d6e4807753af7f4d8bd418dc085[m
+Author: Arya Lohia <96156566+a-lohia@users.noreply.github.com>
+Date:   Sat Nov 19 11:42:16 2022 -0500
+
+    Mission Pad Auton
+
+[33mcommit 25ef38163d63c6bb1b229a22f0ba4e46027e46f1[m
+Author: Arya Lohia <96156566+a-lohia@users.noreply.github.com>
+Date:   Thu Nov 17 12:41:40 2022 -0500
+
+    Added Comments
+
+[33mcommit 39189aaafa3cf80a4c43fbb1fd749245a3cc602e[m
+Author: Arya Lohia <96156566+a-lohia@users.noreply.github.com>
+Date:   Wed Nov 16 20:10:45 2022 -0500
+
+    try/except
+
+[33mcommit 84ef862529e1caf7eb43cf44eca90129d10d69f3[m
+Author: Arya Lohia <96156566+a-lohia@users.noreply.github.com>
+Date:   Tue Nov 15 23:01:56 2022 -0500
+
+    Requirements
+
+[33mcommit 0e3b61ef95c43f6248c4a9e63c93a5354d2fd539[m
+Author: literallyanything <62899372+literally-anything@users.noreply.github.com>
+Date:   Tue Nov 15 22:55:21 2022 -0500
+
+    Create README.md
+
+[33mcommit a9a7b33c13019405cc8f9f371fa2a1a2b70b211f[m
+Author: Arya Lohia <96156566+a-lohia@users.noreply.github.com>
+Date:   Tue Nov 15 22:53:14 2022 -0500
+
+    FirstCommit

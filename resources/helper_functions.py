@@ -1,11 +1,12 @@
 from djitellopy import Tello
 from resources.ControllerInput import XboxController
-from guizero import Text
+from guizero import Text, Picture
 import time
 from threading import Lock
 from resources.constants import *
 from threading import Thread, Lock
 
+pictures = ["mission1", "mission2", "mission3"]
 is_auton = False
 side = "textron"
 m_type = 1
@@ -276,7 +277,7 @@ def residential(tello:Tello, mission_type:int, lock: Lock) -> None:
         is_auton = False
 
 
-def switch_status(tello: Tello, controller: XboxController, lock: Lock, auton_text: Text, mission_text: Text):
+def switch_status(tello: Tello, controller: XboxController, lock: Lock, auton_text: Text, mission_text: Text, mission_picture: Picture):
     """X to turn on, B to turn off"""
 
     global is_auton
@@ -288,6 +289,9 @@ def switch_status(tello: Tello, controller: XboxController, lock: Lock, auton_te
             #print(f"{controller.X}")
             auton_text.value = f"Autonomous Mode: {is_auton}"
             mission_text.value =f"mission: {m_type}"
+
+
+            mission_picture.image = pictures[m_type-1]
 
             left_pad = controller.LeftDPad
             #print(left_pad)
