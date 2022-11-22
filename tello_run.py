@@ -1,17 +1,16 @@
-from resources.constants import * 
-from resources.helper_functions import *
+from resources.helper_functions import (is_auton, set_side, m_type,
+                                        tellocontrolloop, telloupdateloop,
+                                        switch_status)
 from guizero import App, Text, Combo, Picture
 from djitellopy import Tello
 from threading import Thread, Lock
 from resources.ControllerInput import XboxController
 
-
-
 app = App(title="tello-control")
 controller = XboxController()
 tello = Tello()
 
-#Button Variables
+# Button Variables
 mp = -1
 battery = -1
 mission_pad_text = Text(app, text=f"MP: {mp}")
@@ -31,16 +30,10 @@ tellostatusthread = Thread(target=lambda: switch_status(tello, controller, tello
 tello.connect()
 tello.set_mission_pad_detection_direction(0)
 
-
-
-#buttons_text = Text(app, text=f"Buttons: {controller.read()}")
-
-try: 
+try:
     tellocontrolthread.start()
     telloupdatethread.start()
     tellostatusthread.start()
     app.display()
 finally:
     tello.end()
-
-
