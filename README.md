@@ -1,7 +1,10 @@
 # avr-tello-2022
+Author(s): 
+- Arya Lohia
+- Hunter Baker
 
 ## About
-DJI Ryze Tello Programming for Bell AVR 2022 Emergency Firefighting Challenge
+Daedalus Robotics (Team 76122A) DJI Ryze Tello Code for Bell AVR 2022 Emergency Firefighting Challenge
 
 ## To Run
 run `tello_run.py`
