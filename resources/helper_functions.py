@@ -6,10 +6,10 @@ from threading import Lock
 from resources.constants import *
 from threading import Thread, Lock
 
-pictures = ["mission1", "mission2", "mission3"]
+
 is_auton = False
 side = "textron"
-m_type = 1
+m_type = -1
 
 def set_side(current: str) -> None:
     global side
@@ -277,7 +277,14 @@ def residential(tello:Tello, mission_type:int, lock: Lock) -> None:
         is_auton = False
 
 
-def switch_status(tello: Tello, controller: XboxController, lock: Lock, auton_text: Text, mission_text: Text, mission_picture: Picture):
+def switch_status(tello: Tello, 
+                  controller: XboxController, 
+                  lock: Lock, 
+                  auton_text: Text, 
+                  mission_text: Text, 
+                  mission_picture_1: Picture, 
+                  mission_picture_2: Picture, 
+                  mission_picture_3: Picture):
     """X to turn on, B to turn off"""
 
     global is_auton
@@ -286,28 +293,57 @@ def switch_status(tello: Tello, controller: XboxController, lock: Lock, auton_te
 
     while True:
         try: 
-            #print(f"{controller.X}")
+
+            if controller.B == 1 and controller.B != last_button_B and  is_auton:
+                is_auton = False
+
+            last_button_LeftDPad = controller.LeftDPad
+            last_button_UpDPad = controller.UpDPad
+            last_button_RightDPad = controller.RightDPad
+            last_button_DownDPad = controller.DownDPad
+            last_button_B = controller.B
+            last_button_X = controller.X
+
+            #update autonomous text box and mission number
             auton_text.value = f"Autonomous Mode: {is_auton}"
             mission_text.value =f"mission: {m_type}"
 
 
-            mission_picture.image = pictures[m_type-1]
-
+            #takes current input from controller
             left_pad = controller.LeftDPad
-            #print(left_pad)
             up_pad = controller.UpDPad
             right_pad = controller.RightDPad
+            down_pad = controller.DownDPad
 
+
+
+            #changes mission type based on buttons pressed
             if left_pad == 1 and left_pad != last_button_LeftDPad and not is_auton:
                 m_type = 1
+                mission_picture_1.visible = True
+                mission_picture_2.visible = False
+                mission_picture_3.visible = False
             if up_pad == 1 and up_pad != last_button_UpDPad and not is_auton:
                 m_type = 2
+                mission_picture_1.visible = False
+                mission_picture_2.visible = True
+                mission_picture_3.visible = False
             if right_pad == 1 and right_pad != last_button_RightDPad and not is_auton:
                 m_type = 3
+                mission_picture_1.visible = False
+                mission_picture_2.visible = False
+                mission_picture_3.visible = True
+            if down_pad == 1 and down_pad != last_button_DownDPad and not is_auton:
+                m_type = -1
+                mission_picture_1.visible = False
+                mission_picture_2.visible = False
+                mission_picture_3.visible = False
 
 
-
-            if controller.X == 1 and controller.X != last_button_X and not is_auton:
+            #as long as a mission (1-3) is selected it activates autonomy
+            if m_type == -1:
+                continue
+            elif controller.X == 1 and controller.X != last_button_X and not is_auton:
                 #print("2")
                 is_auton = True
                 if side=="textron":
@@ -315,14 +351,6 @@ def switch_status(tello: Tello, controller: XboxController, lock: Lock, auton_te
                 elif side=="residential":
                     Thread(target=lambda: residential(tello, mission_type=m_type, lock=lock), daemon=True).start() 
             
-            if controller.B == 1 and controller.B != last_button_B and  is_auton:
-                is_auton = False
-
-            last_button_LeftDPad = controller.LeftDPad
-            last_button_UpDPad = controller.UpDPad
-            last_button_RightDPad = controller.RightDPad
-            last_button_B = controller.B
-            last_button_X = controller.X
         except:
             pass
 
