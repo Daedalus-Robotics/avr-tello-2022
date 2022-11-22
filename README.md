@@ -1,5 +1,17 @@
 # avr-tello-2022
 
-tello_run.py
-Has support for all three autonomous missions. Currently adding support for user inputed through gui/xbox controller which side and mission is occuring.
+## About
+DJI Ryze Tello Programming for Bell AVR 2022 Emergency Firefighting Challenge
 
+## To Run
+run `tello_run.py`
+
+## Usage
+
+Currently Supports:
+- all three autonomous missions. 
+- XBOX One S controller to controll the drone manually. 
+- Switch from manual mode to autonomous mode through the GUI
+- Swith between missions from the controller
+- Display mission path based on selected mission in the GUI
+- Can change side of field that mission will occur in; either Textron or Residential
