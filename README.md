@@ -13,7 +13,7 @@ run `tello_run.py`
 
 Currently Supports:
 - all three autonomous missions. 
-- XBOX One S controller to controll the drone manually. 
+- XBOX One S controller to control the drone manually. 
 - Switch from manual mode to autonomous mode through the GUI
 - Swith between missions from the controller
 - Display mission path based on selected mission in the GUI
