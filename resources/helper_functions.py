@@ -41,6 +41,13 @@ def loop_forward(tello: Tello, dist: int, mp: int) -> None:
         tello.move_forward(dist)
 
 
+def loop_down_to_missionpad(tello: Tello, mp: int, dist: int=20) -> None:
+    while tello.get_mission_pad_distance_y() > 30:
+        if not is_auton:
+            break
+        tello.move_down(dist)
+
+
 def map(x: float or int,
         in_min: float or int,
         in_max: float or int,
@@ -324,6 +331,72 @@ def residential(tello: Tello, mission_type: int, lock: Lock) -> None:
         is_auton = False
 
 
+def land_textron(tello: Tello, lock: Lock) -> None:
+
+    # Either tall closed roof or tall open roof
+    start_pad = tello.get_mission_pad_id()
+
+    # Make sure it is over the pad 
+    triangulate_small(tello)
+    loop_down_to_missionpad(tello, tello.get_mission_pad_id())
+    triangulate_small(tello) 
+
+    tello.move_forward(40)
+    tello.move_down(TEXTRON_TALL_Y)
+    
+    loop_forward(tello, dist=20, mp=(3 if start_pad==5 else 4))
+
+    triangulate_small(tello)
+
+    loop_forward(tello, dist=20, mp=(1 if start_pad==5 else 2))
+
+    triangulate_small(tello)
+
+    loop_forward(tello, dist=20, mp=(7 if start_pad==5 else 8))
+
+    triangulate_small(tello)
+
+    if(tello.get_height() > 20):
+        tello.move_down(20)
+
+    triangulate_small(tello)
+
+    tello.land()
+    
+
+def land_residential(tello: Tello, lock: Lock) -> None:
+
+    # Either tall closed roof or tall open roof
+    start_pad = tello.get_mission_pad_id()
+
+    # Make sure it is over the pad 
+    triangulate_small(tello)
+    loop_down_to_missionpad(tello, tello.get_mission_pad_id())
+    triangulate_small(tello) 
+
+    tello.move_forward(40)
+    tello.move_down(RESIDENTIAL_TALL_Y)
+    
+    loop_forward(tello, dist=20, mp=(3 if start_pad==5 else 4))
+
+    triangulate_small(tello)
+
+    loop_forward(tello, dist=20, mp=(1 if start_pad==5 else 2))
+
+    triangulate_small(tello)
+
+    loop_forward(tello, dist=20, mp=(7 if start_pad==5 else 8))
+
+    triangulate_small(tello)
+
+    if(tello.get_height() > 20):
+        tello.move_down(20)
+
+    triangulate_small(tello)
+
+    tello.land()
+
+
 def switch_status(tello: Tello,
                   controller: XboxController,
                   lock: Lock,
@@ -331,7 +404,7 @@ def switch_status(tello: Tello,
                   mission_text: Text,
                   mission_picture_1: Picture,
                   mission_picture_2: Picture,
-                  mission_picture_3: Picture):
+                  mission_picture_3: Picture) -> None:
     """X to turn on, B to turn off"""
 
     global is_auton
