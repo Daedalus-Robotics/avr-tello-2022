@@ -1,6 +1,4 @@
-from resources.helper_functions import (is_auton, set_side, m_type,
-                                        tellocontrolloop, telloupdateloop,
-                                        switch_status)
+from resources.helper_functions import *
 from guizero import App, Text, Combo, Picture
 from djitellopy import Tello
 from threading import Thread, Lock
