@@ -2,10 +2,7 @@ from djitellopy import Tello
 from resources.ControllerInput import XboxController
 from guizero import Text, Picture
 import time
-from resources.constants import (TEXTRON_TALL_Y, TEXTRON_MIDDLE_Y,
-                                 TEXTRON_SMALL_Y, RESIDENTIAL_TALL_Y,
-                                 RESIDENTIAL_MIDDLE_Y, RESIDENTIAL_SMALL_Y,
-                                 FIRESTATION_TO_FIRSTBUILDING_LATERAL)
+from resources.constants import *
 from threading import Thread, Lock
 
 
@@ -41,7 +38,7 @@ def loop_forward(tello: Tello, dist: int, mp: int) -> None:
         tello.move_forward(dist)
 
 
-def loop_down_to_missionpad(tello: Tello, mp: int, dist: int=20) -> None:
+def loop_down_to_missionpad(tello: Tello, mp: int, dist: int = 20) -> None:
     while tello.get_mission_pad_distance_y() > 30:
         if not is_auton:
             break
@@ -86,7 +83,7 @@ def textron(tello: Tello, mission_type: int, lock: Lock) -> None:
         if not is_auton:
             return
 
-        tello.move_up(TEXTRON_MIDDLE_Y-TEXTRON_SMALL_Y)  # Above first pad
+        tello.move_up(TEXTRON_MIDDLE_Y - TEXTRON_SMALL_Y)  # Above first pad
         if not is_auton:
             return
 
@@ -336,60 +333,60 @@ def land_textron(tello: Tello, lock: Lock) -> None:
     # Either tall closed roof or tall open roof
     start_pad = tello.get_mission_pad_id()
 
-    # Make sure it is over the pad 
+    # Make sure it is over the pad
     triangulate_small(tello)
     loop_down_to_missionpad(tello, tello.get_mission_pad_id())
-    triangulate_small(tello) 
+    triangulate_small(tello)
 
     tello.move_forward(40)
     tello.move_down(TEXTRON_TALL_Y)
-    
-    loop_forward(tello, dist=20, mp=(3 if start_pad==5 else 4))
+
+    loop_forward(tello, dist=20, mp=(3 if start_pad == 5 else 4))
 
     triangulate_small(tello)
 
-    loop_forward(tello, dist=20, mp=(1 if start_pad==5 else 2))
+    loop_forward(tello, dist=20, mp=(1 if start_pad == 5 else 2))
 
     triangulate_small(tello)
 
-    loop_forward(tello, dist=20, mp=(7 if start_pad==5 else 8))
+    loop_forward(tello, dist=20, mp=(7 if start_pad == 5 else 8))
 
     triangulate_small(tello)
 
-    if(tello.get_height() > 20):
+    if (tello.get_height() > 20):
         tello.move_down(20)
 
     triangulate_small(tello)
 
     tello.land()
-    
+
 
 def land_residential(tello: Tello, lock: Lock) -> None:
 
     # Either tall closed roof or tall open roof
     start_pad = tello.get_mission_pad_id()
 
-    # Make sure it is over the pad 
+    # Make sure it is over the pad
     triangulate_small(tello)
     loop_down_to_missionpad(tello, tello.get_mission_pad_id())
-    triangulate_small(tello) 
+    triangulate_small(tello)
 
     tello.move_forward(40)
     tello.move_down(RESIDENTIAL_TALL_Y)
-    
-    loop_forward(tello, dist=20, mp=(3 if start_pad==5 else 4))
+
+    loop_forward(tello, dist=20, mp=(3 if start_pad == 5 else 4))
 
     triangulate_small(tello)
 
-    loop_forward(tello, dist=20, mp=(1 if start_pad==5 else 2))
+    loop_forward(tello, dist=20, mp=(1 if start_pad == 5 else 2))
 
     triangulate_small(tello)
 
-    loop_forward(tello, dist=20, mp=(7 if start_pad==5 else 8))
+    loop_forward(tello, dist=20, mp=(7 if start_pad == 5 else 8))
 
     triangulate_small(tello)
 
-    if(tello.get_height() > 20):
+    if (tello.get_height() > 20):
         tello.move_down(20)
 
     triangulate_small(tello)
@@ -420,8 +417,7 @@ def switch_status(tello: Tello,
             last_button_B = controller.B
             last_button_X = controller.X
 
-            if (controller.B == 1 and controller.B != last_button_B
-               and is_auton):
+            if (controller.B == 1 and controller.B != last_button_B and is_auton):
                 is_auton = False
 
             # update autonomous text box and mission number
@@ -436,26 +432,22 @@ def switch_status(tello: Tello,
 
             # changes mission type based on buttons pressed
 
-            if (left_pad == 1 and left_pad != last_button_LeftDPad
-               and not is_auton):
+            if (left_pad == 1 and left_pad != last_button_LeftDPad and not is_auton):
                 m_type = 1
                 mission_picture_1.visible = True
                 mission_picture_2.visible = False
                 mission_picture_3.visible = False
-            if (up_pad == 1 and up_pad != last_button_UpDPad
-               and not is_auton):
+            if (up_pad == 1 and up_pad != last_button_UpDPad and not is_auton):
                 m_type = 2
                 mission_picture_1.visible = False
                 mission_picture_2.visible = True
                 mission_picture_3.visible = False
-            if (right_pad == 1 and right_pad != last_button_RightDPad
-               and not is_auton):
+            if (right_pad == 1 and right_pad != last_button_RightDPad and not is_auton):
                 m_type = 3
                 mission_picture_1.visible = False
                 mission_picture_2.visible = False
                 mission_picture_3.visible = True
-            if (down_pad == 1 and down_pad != last_button_DownDPad
-               and not is_auton):
+            if (down_pad == 1 and down_pad != last_button_DownDPad and not is_auton):
                 m_type = -1
                 mission_picture_1.visible = False
                 mission_picture_2.visible = False
@@ -468,9 +460,27 @@ def switch_status(tello: Tello,
                   is_auton):
                 is_auton = True
                 if side == "textron":
-                    Thread(target=lambda: textron(tello, mission_type=m_type, lock=lock), daemon=True).start()
+
+                    Thread(
+                        target=lambda: textron(
+                            tello,
+                            mission_type=m_type,
+                            lock=lock
+                        ),
+                        daemon=True
+                    ).start()
+
                 elif side == "residential":
-                    Thread(target=lambda: residential(tello, mission_type=m_type, lock=lock), daemon=True).start()
+
+                    Thread(
+                        target=lambda: residential(
+                            tello,
+                            mission_type=m_type,
+                            lock=lock
+                        ),
+                        daemon=True
+                    ).start()
+
         except Exception as e:
             print(f"{e}")
             pass
@@ -487,8 +497,7 @@ def tellocontrolloop(tello: Tello, controller: XboxController, lock: Lock):
                 last_button_A = controller.A
 
                 # Check for inputs
-                if (controller.Y == 1 and not tello.is_flying and
-                   controller.Y != last_button_Y):
+                if (controller.Y == 1 and not tello.is_flying and controller.Y != last_button_Y):
                     tello.takeoff()
 
                 elif controller.A == 1 and controller.A != last_button_A:
@@ -528,7 +537,7 @@ def telloupdateloop(tello: Tello, battery_text: Text, mission_pad_text: Text):
             battery = tello.get_battery()
             battery_text.value = f"Battery: {battery}%"
             mission_pad_text.value = f"MP: {mp}"
-            time.sleep(1/10)
+            time.sleep(1 / 10)
 
         except Exception as e:
             print(f"{e}")
