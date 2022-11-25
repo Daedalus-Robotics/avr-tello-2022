@@ -1,11 +1,11 @@
 from djitellopy import Tello
 from resources.ControllerInput import XboxController
 from guizero import Text, Picture
-import time
 from resources.constants import *
 from threading import Thread, Lock
+import time
 
-
+# Global Variables
 is_auton = False
 side = "textron"
 m_type = -1
@@ -17,18 +17,18 @@ def set_side(current: str) -> None:
     side = current
 
 
-def triangulate_small(t: Tello) -> tuple:
+def triangulate_small(t: Tello) -> None:
     z_dist = t.get_mission_pad_distance_z()
 
-    id = t.get_mission_pad_id()
-    t.go_xyz_speed_mid(x=0, y=0, z=z_dist, speed=30, mid=id)
+    mid = t.get_mission_pad_id()
+    t.go_xyz_speed_mid(x=0, y=0, z=z_dist, speed=30, mid=mid)
 
 
-def triangulate_tall(t: Tello) -> tuple:
+def triangulate_tall(t: Tello) -> None:
     z_dist = t.get_mission_pad_distance_z()
 
-    id = t.get_mission_pad_id()
-    t.go_xyz_speed_mid(x=0, y=0, z=z_dist, speed=30, mid=id)
+    mid = t.get_mission_pad_id()
+    t.go_xyz_speed_mid(x=0, y=0, z=z_dist, speed=30, mid=mid)
 
 
 def loop_forward(tello: Tello, dist: int, mp: int) -> None:
@@ -38,27 +38,28 @@ def loop_forward(tello: Tello, dist: int, mp: int) -> None:
         tello.move_forward(dist)
 
 
-def loop_down_to_missionpad(tello: Tello, mp: int, dist: int = 20) -> None:
+def loop_down_to_mission_pad(tello: Tello, _mp: int, dist: int = 20) -> None:
     while tello.get_mission_pad_distance_y() > 30:
         if not is_auton:
             break
         tello.move_down(dist)
 
 
-def map(x: float or int,
-        in_min: float or int,
-        in_max: float or int,
-        out_min: float or int,
-        out_max: float or int) -> float or int:
+def map_joysticks(x: float or int,
+                  in_min: float or int,
+                  in_max: float or int,
+                  out_min: float or int,
+                  out_max: float or int) -> float or int:
     """Maps input ranges to output ranges"""
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
 
 
 def textron(tello: Tello, mission_type: int, lock: Lock) -> None:
-
     global is_auton
 
     with lock:
+
+        time.sleep(.1)
 
         if not tello.is_flying:
             tello.takeoff()
@@ -84,6 +85,7 @@ def textron(tello: Tello, mission_type: int, lock: Lock) -> None:
             return
 
         tello.move_up(TEXTRON_MIDDLE_Y - TEXTRON_SMALL_Y)  # Above first pad
+
         if not is_auton:
             return
 
@@ -193,6 +195,8 @@ def residential(tello: Tello, mission_type: int, lock: Lock) -> None:
     global is_auton
 
     with lock:
+
+        time.sleep(.1)
 
         if not tello.is_flying:
             tello.takeoff()
@@ -329,69 +333,69 @@ def residential(tello: Tello, mission_type: int, lock: Lock) -> None:
 
 
 def land_textron(tello: Tello, lock: Lock) -> None:
+    with lock:
+        # Either tall closed roof or tall open roof
+        start_pad = tello.get_mission_pad_id()
 
-    # Either tall closed roof or tall open roof
-    start_pad = tello.get_mission_pad_id()
+        # Make sure it is over the pad
+        triangulate_small(tello)
+        loop_down_to_mission_pad(tello, tello.get_mission_pad_id())
+        triangulate_small(tello)
 
-    # Make sure it is over the pad
-    triangulate_small(tello)
-    loop_down_to_missionpad(tello, tello.get_mission_pad_id())
-    triangulate_small(tello)
+        tello.move_forward(40)
+        tello.move_down(TEXTRON_TALL_Y)
 
-    tello.move_forward(40)
-    tello.move_down(TEXTRON_TALL_Y)
+        loop_forward(tello, dist=20, mp=(3 if start_pad == 5 else 4))
 
-    loop_forward(tello, dist=20, mp=(3 if start_pad == 5 else 4))
+        triangulate_small(tello)
 
-    triangulate_small(tello)
+        loop_forward(tello, dist=20, mp=(1 if start_pad == 5 else 2))
 
-    loop_forward(tello, dist=20, mp=(1 if start_pad == 5 else 2))
+        triangulate_small(tello)
 
-    triangulate_small(tello)
+        loop_forward(tello, dist=20, mp=(7 if start_pad == 5 else 8))
 
-    loop_forward(tello, dist=20, mp=(7 if start_pad == 5 else 8))
+        triangulate_small(tello)
 
-    triangulate_small(tello)
+        if tello.get_height() > 20:
+            tello.move_down(20)
 
-    if (tello.get_height() > 20):
-        tello.move_down(20)
+        triangulate_small(tello)
 
-    triangulate_small(tello)
-
-    tello.land()
+        tello.land()
 
 
 def land_residential(tello: Tello, lock: Lock) -> None:
+    with lock:
+        # Either tall closed roof or tall open roof
+        start_pad = tello.get_mission_pad_id()
 
-    # Either tall closed roof or tall open roof
-    start_pad = tello.get_mission_pad_id()
+        # Make sure it is over the pad
+        triangulate_small(tello)
+        loop_down_to_mission_pad(tello, tello.get_mission_pad_id())
+        triangulate_small(tello)
 
-    # Make sure it is over the pad
-    triangulate_small(tello)
-    loop_down_to_missionpad(tello, tello.get_mission_pad_id())
-    triangulate_small(tello)
+        tello.move_forward(40)
+        tello.move_down(RESIDENTIAL_TALL_Y)
 
-    tello.move_forward(40)
-    tello.move_down(RESIDENTIAL_TALL_Y)
+        loop_forward(tello, dist=20, mp=(3 if start_pad == 5 else 4))
 
-    loop_forward(tello, dist=20, mp=(3 if start_pad == 5 else 4))
+        triangulate_small(tello)
 
-    triangulate_small(tello)
+        loop_forward(tello, dist=20, mp=(1 if start_pad == 5 else 2))
 
-    loop_forward(tello, dist=20, mp=(1 if start_pad == 5 else 2))
+        triangulate_small(tello)
 
-    triangulate_small(tello)
+        loop_forward(tello, dist=20, mp=(7 if start_pad == 5 else 8))
 
-    loop_forward(tello, dist=20, mp=(7 if start_pad == 5 else 8))
+        triangulate_small(tello)
 
-    triangulate_small(tello)
+        if tello.get_height() > 20:
+            tello.move_down(20)
 
-    if (tello.get_height() > 20):
-        tello.move_down(20)
+        triangulate_small(tello)
 
-    triangulate_small(tello)
-
-    tello.land()
+        tello.land()
 
 
 def switch_status(tello: Tello,
@@ -401,23 +405,25 @@ def switch_status(tello: Tello,
                   mission_text: Text,
                   mission_picture_1: Picture,
                   mission_picture_2: Picture,
-                  mission_picture_3: Picture) -> None:
+                  mission_picture_3: Picture,
+                  basepads_picture: Picture) -> None:
     """X to turn on, B to turn off"""
 
     global is_auton
     global m_type
 
+    last_button_left_d_pad = 0
+    last_button_up_d_pad = 0
+    last_button_right_d_pad = 0
+    last_button_down_d_pad = 0
+    last_button_b = 0
+    last_button_x = 0
+
     while True:
+
         try:
 
-            last_button_LeftDPad = controller.LeftDPad
-            last_button_UpDPad = controller.UpDPad
-            last_button_RightDPad = controller.RightDPad
-            last_button_DownDPad = controller.DownDPad
-            last_button_B = controller.B
-            last_button_X = controller.X
-
-            if (controller.B == 1 and controller.B != last_button_B and is_auton):
+            if controller.B == 1 and controller.B != last_button_b and is_auton:
                 is_auton = False
 
             # update autonomous text box and mission number
@@ -432,32 +438,35 @@ def switch_status(tello: Tello,
 
             # changes mission type based on buttons pressed
 
-            if (left_pad == 1 and left_pad != last_button_LeftDPad and not is_auton):
+            if left_pad == 1 and left_pad != last_button_left_d_pad and not is_auton:
                 m_type = 1
                 mission_picture_1.visible = True
                 mission_picture_2.visible = False
                 mission_picture_3.visible = False
-            if (up_pad == 1 and up_pad != last_button_UpDPad and not is_auton):
+                basepads_picture.visible = False
+            if up_pad == 1 and up_pad != last_button_up_d_pad and not is_auton:
                 m_type = 2
                 mission_picture_1.visible = False
                 mission_picture_2.visible = True
                 mission_picture_3.visible = False
-            if (right_pad == 1 and right_pad != last_button_RightDPad and not is_auton):
+                basepads_picture.visible = False
+            if right_pad == 1 and right_pad != last_button_right_d_pad and not is_auton:
                 m_type = 3
                 mission_picture_1.visible = False
                 mission_picture_2.visible = False
                 mission_picture_3.visible = True
-            if (down_pad == 1 and down_pad != last_button_DownDPad and not is_auton):
+                basepads_picture.visible = False
+            if down_pad == 1 and down_pad != last_button_down_d_pad and not is_auton:
                 m_type = -1
                 mission_picture_1.visible = False
                 mission_picture_2.visible = False
                 mission_picture_3.visible = False
+                basepads_picture.visible = True
 
             # As long as a mission (1-3) is selected it activates autonomy
             if m_type == -1:
                 continue
-            elif (controller.X == 1 and controller.X != last_button_X and not
-                  is_auton):
+            elif controller.X == 1 and controller.X != last_button_x and not is_auton:
                 is_auton = True
                 if side == "textron":
 
@@ -481,27 +490,38 @@ def switch_status(tello: Tello,
                         daemon=True
                     ).start()
 
+            # Sets last buttons for comparison
+            last_button_left_d_pad = controller.LeftDPad
+            last_button_up_d_pad = controller.UpDPad
+            last_button_right_d_pad = controller.RightDPad
+            last_button_down_d_pad = controller.DownDPad
+            last_button_b = controller.B
+            last_button_x = controller.X
+
         except Exception as e:
             print(f"{e}")
             pass
 
 
-def tellocontrolloop(tello: Tello, controller: XboxController, lock: Lock):
-
+def tello_control_loop(tello: Tello, controller: XboxController, lock: Lock):
     while True:
         with lock:
+
+            time.sleep(.1)
+
             try:
 
-                # Sets last buttons for comparison
-                last_button_Y = controller.Y
-                last_button_A = controller.A
-
                 # Check for inputs
-                if (controller.Y == 1 and not tello.is_flying and controller.Y != last_button_Y):
+                if controller.Y == 1 and not tello.is_flying and controller.Y != last_button_Y:
+                    print("y, pressed")
                     tello.takeoff()
 
                 elif controller.A == 1 and controller.A != last_button_A:
                     tello.land()
+
+                # Sets last buttons for comparison
+                last_button_Y = controller.Y
+                last_button_A = controller.A
 
                 # Joystick Data
                 left_stick_y = controller.LeftJoystickY
@@ -510,10 +530,10 @@ def tellocontrolloop(tello: Tello, controller: XboxController, lock: Lock):
                 right_stick_x = controller.RightJoystickX
 
                 # Map from Joystick values to Input Values
-                up_down = int(map(left_stick_y, -1, 1, -100, 100))
-                yaw = int(map(left_stick_x, -1, 1, -100, 100))
-                forward_backward = int(map(right_stick_y, -1, 1, -100, 100))
-                left_right = int(map(right_stick_x, -1, 1, -100, 100))
+                up_down = int(map_joysticks(left_stick_y, -1, 1, -100, 100))
+                yaw = int(map_joysticks(left_stick_x, -1, 1, -100, 100))
+                forward_backward = int(map_joysticks(right_stick_y, -1, 1, -100, 100))
+                left_right = int(map_joysticks(right_stick_x, -1, 1, -100, 100))
 
                 # Send Command to Tello
                 tello.send_rc_control(left_right, forward_backward,
@@ -526,8 +546,7 @@ def tellocontrolloop(tello: Tello, controller: XboxController, lock: Lock):
         pass
 
 
-def telloupdateloop(tello: Tello, battery_text: Text, mission_pad_text: Text):
-
+def tello_update_loop(tello: Tello, battery_text: Text, mission_pad_text: Text):
     while True:
 
         try:
