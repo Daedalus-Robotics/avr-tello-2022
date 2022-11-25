@@ -1,12 +1,18 @@
+import PIL.Image
+
 from lib.helper_functions import *
-from guizero import App, Text, Combo, Picture
+from guizero import App, Text, Combo, Picture, Box
 from djitellopy import Tello
 from threading import Thread, Lock
-from lib.ControllerInput import XboxController
+from lib.controller_input import XboxController
+from PIL import Image
 
-app = App(title="tello-control")
+app = App(title="Daedalus Robotics Tello GUI")
 controller = XboxController()
 tello = Tello()
+logo = Image.open(r"assets\logo.png").resize(size=(500, 500))
+print(type(logo))
+app.image = logo
 
 # Button Variables
 mp = -1
@@ -61,7 +67,7 @@ mission_picture_3 = Picture(
 )
 
 # noinspection PyArgumentEqualDefault
-basepads_picture = Picture(
+base_pads_picture = Picture(
     app,
     image=r"assets\basepads.png",
     width=778,
@@ -101,7 +107,7 @@ tello_status_thread = Thread(
         mission_picture_1,
         mission_picture_2,
         mission_picture_3,
-        basepads_picture
+        base_pads_picture
     ),
     daemon=True
 )
