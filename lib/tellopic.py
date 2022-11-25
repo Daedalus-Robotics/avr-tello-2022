@@ -7,7 +7,13 @@ class MissionPad:
     def __init__(self, mid: int, on_pad: bool, app: App):
         self.mid = mid
         self.on_pad = on_pad
-        self.tello = Picture(app, )
+        self.tello = Picture(
+            app,
+            image=r"assets\tello.png",
+            width=100,
+            height=100,
+            visible=False
+        )
 
     @property
     def pad(self) -> int:

@@ -44,27 +44,27 @@ mission_text = Text(app, text=f"mission: {m_type}")
 
 mission_picture_1 = Picture(
     app,
-    image=r"assets\mission1.png",
-    width=573,
-    height=408,
+    image=r"assets\mission_1.png",
+    width=778,
+    height=296,
     align="bottom",
     visible=False
 )
 
 mission_picture_2 = Picture(
     app,
-    image=r"assets\mission2.png",
-    width=573,
-    height=408,
+    image=r"assets\mission_2.png",
+    width=778,
+    height=296,
     align="bottom",
     visible=False
 )
 
 mission_picture_3 = Picture(
     app,
-    image=r"assets\mission3.png",
-    width=573,
-    height=408,
+    image=r"assets\mission_3.png",
+    width=778,
+    height=296,
     align="bottom",
     visible=False
 )
