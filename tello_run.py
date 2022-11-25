@@ -7,7 +7,7 @@ from threading import Thread, Lock
 from lib.controller_input import XboxController
 from PIL import Image
 
-app = App(title="Daedalus Robotics Tello GUI")
+app = App(title="Daedalus Robotics Tello GUI", layout="auto")
 controller = XboxController()
 tello = Tello()
 logo = Image.open(r"assets\logo.png").resize(size=(500, 500))
@@ -47,6 +47,7 @@ mission_picture_1 = Picture(
     image=r"assets\mission1.png",
     width=573,
     height=408,
+    align="bottom",
     visible=False
 )
 
@@ -55,6 +56,7 @@ mission_picture_2 = Picture(
     image=r"assets\mission2.png",
     width=573,
     height=408,
+    align="bottom",
     visible=False
 )
 
@@ -63,6 +65,7 @@ mission_picture_3 = Picture(
     image=r"assets\mission3.png",
     width=573,
     height=408,
+    align="bottom",
     visible=False
 )
 
@@ -72,6 +75,7 @@ base_pads_picture = Picture(
     image=r"assets\basepads.png",
     width=778,
     height=296,
+    align="bottom",
     visible=True
 )
 
