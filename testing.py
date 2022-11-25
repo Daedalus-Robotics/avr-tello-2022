@@ -1,4 +1,4 @@
-from resources.tellopic import MissionPad
+from lib.tellopic import MissionPad
 import numpy as np
 
 textron = np.ndarray(shape=(2, 4), dtype=MissionPad)

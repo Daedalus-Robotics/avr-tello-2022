@@ -1,7 +1,7 @@
 from djitellopy import Tello
-from resources.ControllerInput import XboxController
+from lib.ControllerInput import XboxController
 from guizero import Text, Picture
-from resources.constants import *
+from lib.constants import *
 from threading import Thread, Lock
 import time
 

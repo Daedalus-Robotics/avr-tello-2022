@@ -1,7 +1,7 @@
 from guizero import App, Text
 from djitellopy import Tello
 from threading import Thread
-from resources.ControllerInput import XboxController
+from lib.ControllerInput import XboxController
 
 app = App(title="tello-control")
 controller = XboxController()

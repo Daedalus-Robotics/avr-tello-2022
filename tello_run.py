@@ -1,8 +1,8 @@
-from resources.helper_functions import *
+from lib.helper_functions import *
 from guizero import App, Text, Combo, Picture
 from djitellopy import Tello
 from threading import Thread, Lock
-from resources.ControllerInput import XboxController
+from lib.ControllerInput import XboxController
 
 app = App(title="tello-control")
 controller = XboxController()
@@ -38,7 +38,7 @@ mission_text = Text(app, text=f"mission: {m_type}")
 
 mission_picture_1 = Picture(
     app,
-    image="mission1.png",
+    image=r"assets\mission1.png",
     width=573,
     height=408,
     visible=False
@@ -46,7 +46,7 @@ mission_picture_1 = Picture(
 
 mission_picture_2 = Picture(
     app,
-    image="mission2.png",
+    image=r"assets\mission2.png",
     width=573,
     height=408,
     visible=False
@@ -54,7 +54,7 @@ mission_picture_2 = Picture(
 
 mission_picture_3 = Picture(
     app,
-    image="mission3.png",
+    image=r"assets\mission3.png",
     width=573,
     height=408,
     visible=False
@@ -63,7 +63,7 @@ mission_picture_3 = Picture(
 # noinspection PyArgumentEqualDefault
 basepads_picture = Picture(
     app,
-    image="basepads.png",
+    image=r"assets\basepads.png",
     width=778,
     height=296,
     visible=True
