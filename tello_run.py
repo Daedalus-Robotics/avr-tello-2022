@@ -5,7 +5,7 @@ from guizero import App, Text, Combo, Picture
 from djitellopy import Tello
 from threading import Thread, Lock
 
-
+# noinspection PyArgumentEqualDefault
 app = App(title="Daedalus Robotics Tello GUI", layout="auto")
 controller = XboxController()
 tello = Tello()

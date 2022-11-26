@@ -438,8 +438,9 @@ def switch_status(tello: Tello,
     while True:
 
         try:
-
+            # print(controller.B)
             if controller.B == 1 and controller.B != last_button_b and is_auton:
+                print("land")
                 is_auton = False
 
             # update autonomous text box and mission number
@@ -491,7 +492,7 @@ def switch_status(tello: Tello,
                         ),
                         daemon=True
                     ).start()
-
+                    time.sleep(1)
                 elif side == "residential":
 
                     Thread(
@@ -503,7 +504,7 @@ def switch_status(tello: Tello,
                         ),
                         daemon=True
                     ).start()
-
+                    time.sleep(1)
             # Sets last buttons for comparison
             last_button_left_d_pad = controller.LeftDPad
             last_button_up_d_pad = controller.UpDPad
@@ -532,7 +533,7 @@ def tello_control_loop(tello: Tello, controller: XboxController, lock: Lock, bas
 
                 # Check for inputs
                 if controller.Y == 1 and not tello.is_flying and controller.Y != last_button_y:
-                    print("y, pressed")
+                    # print("y, pressed")
                     tello.takeoff()
 
                 elif controller.A == 1 and controller.A != last_button_a:
