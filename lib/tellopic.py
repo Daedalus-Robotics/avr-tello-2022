@@ -1,43 +1,17 @@
-import numpy as np
-from guizero import Picture, App, Box
+import json
+from guizero import Picture, App
 
 
-class MissionPad:
-
-    def __init__(self, mid: int, on_pad: bool, app: App):
-        self.mid = mid
-        self.on_pad = on_pad
-        self.tello = Picture(
-            app,
-            image=r"assets\tello.png",
-            width=100,
-            height=100,
-            visible=False
-        )
-
-    @property
-    def pad(self) -> int:
-        return self.mid
-
-    @pad.setter
-    def pad(self, mid: int) -> None:
-        self.mid = mid
-
-    def now_on_pad(self):
-        self.on_pad = True
-        return self.on_pad
-
-    def now_off_pad(self):
-        self.on_pad = False
-        return self.on_pad
+def turn_off_all_photos(field: dict):
+    for picture in field.values():
+        picture.visible = False
 
 
-def setup_field_textron() -> np.ndarray:
-    field = np.ndarray(shape=(2, 4), dtype=MissionPad)
-    pads = np.array([7, 1, 3, 5, 8, 2, 4, 6]).reshape(2, 4)
+def setup_field(app: App = None) -> dict:
+    links = json.load(open("assets/field.json", "r"))
+    field = {}
 
-    for row in range(2):
-        for col in range(4):
-            field[row, col] = MissionPad(pads[row, col], False)
+    for str_id, link in links.items():
+        field[int(str_id)] = Picture(app, image=link, align="bottom", visible=False)
 
     return field

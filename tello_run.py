@@ -1,18 +1,16 @@
-import PIL.Image
-
 from lib.helper_functions import *
-from guizero import App, Text, Combo, Picture, Box
+from lib.controller_input import XboxController
+from lib.tellopic import setup_field
+from guizero import App, Text, Combo, Picture
 from djitellopy import Tello
 from threading import Thread, Lock
-from lib.controller_input import XboxController
-from PIL import Image
+
 
 app = App(title="Daedalus Robotics Tello GUI", layout="auto")
 controller = XboxController()
 tello = Tello()
-logo = Image.open(r"assets\logo.png").resize(size=(500, 500))
-print(type(logo))
-app.image = logo
+field = setup_field(app=app)
+
 
 # Button Variables
 mp = -1
@@ -86,7 +84,9 @@ tello_control_thread = Thread(
     target=lambda: tello_control_loop(
         tello,
         controller,
-        tello_lock
+        tello_lock,
+        base_pads_picture,
+        field=field
     ),
     daemon=True
 )
@@ -111,7 +111,7 @@ tello_status_thread = Thread(
         mission_picture_1,
         mission_picture_2,
         mission_picture_3,
-        base_pads_picture
+        field=field
     ),
     daemon=True
 )
