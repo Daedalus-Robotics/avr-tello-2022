@@ -1,5 +1,6 @@
 from djitellopy import Tello
 from lib.controller_input import XboxController
+# noinspection PyUnresolvedReferences
 from guizero import Text, Picture
 from lib.constants import *
 from lib.tellopic import *

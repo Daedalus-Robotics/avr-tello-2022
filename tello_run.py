@@ -18,24 +18,28 @@ battery = -1
 
 mission_pad_text = Text(
     app,
-    text=f"MP: {mp}"
+    text=f"MP: {mp}",
+    align="top"
 )
 
 battery_text = Text(
     app,
-    text=f"Battery: {battery}%"
+    text=f"Battery: {battery}%",
+    align="top"
 )
 
 autonomous_text = Text(
     app,
-    text=f"Autonomous Mode: {is_auton}"
+    text=f"Autonomous Mode: {is_auton}",
+    align="top"
 )
 
 side_switch = Combo(
     app,
     options=["textron", "residential"],
     selected="textron",
-    command=set_side
+    command=set_side,
+    align="top"
 )
 
 mission_text = Text(app, text=f"mission: {m_type}")
@@ -45,7 +49,7 @@ mission_picture_1 = Picture(
     image=r"assets\mission_1.png",
     width=778,
     height=296,
-    align="bottom",
+    align="top",
     visible=False
 )
 
@@ -54,7 +58,7 @@ mission_picture_2 = Picture(
     image=r"assets\mission_2.png",
     width=778,
     height=296,
-    align="bottom",
+    align="top",
     visible=False
 )
 
@@ -63,7 +67,7 @@ mission_picture_3 = Picture(
     image=r"assets\mission_3.png",
     width=778,
     height=296,
-    align="bottom",
+    align="top",
     visible=False
 )
 
