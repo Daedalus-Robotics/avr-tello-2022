@@ -18,3 +18,4 @@ Currently Supports:
 - Swith between missions from the controller
 - Display mission path based on selected mission in the GUI
 - Can change side of field that mission will occur in; either Textron or Residential
+- Updates location based on which mission pad its over
