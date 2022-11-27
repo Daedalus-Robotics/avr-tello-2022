@@ -354,30 +354,59 @@ def land_textron(tello: Tello, lock: Lock, field: dict) -> None:
         # Either tall closed roof or tall open roof
         start_pad = tello.get_mission_pad_id()
 
+        if not is_auton:
+            return
+
         # Make sure it is over the pad
         triangulate(tello, field=field)
+        if not is_auton:
+            return
         loop_down_to_mission_pad(tello, tello.get_mission_pad_id())
+        if not is_auton:
+            return
         triangulate(tello, field=field)
+        if not is_auton:
+            return
 
         tello.move_forward(40)
+        if not is_auton:
+            return
         tello.move_down(TEXTRON_TALL_Y)
+        if not is_auton:
+            return
 
         loop_forward(tello, dist=20, mp=(3 if start_pad == 5 else 4), field=field)
+        if not is_auton:
+            return
 
         triangulate(tello, field=field)
+        if not is_auton:
+            return
 
         loop_forward(tello, dist=20, mp=(1 if start_pad == 5 else 2), field=field)
+        if not is_auton:
+            return
 
         triangulate(tello, field=field)
+        if not is_auton:
+            return
 
         loop_forward(tello, dist=20, mp=(7 if start_pad == 5 else 8), field=field)
+        if not is_auton:
+            return
 
         triangulate(tello, field=field)
+        if not is_auton:
+            return
 
         if tello.get_height() > 20:
             tello.move_down(20)
+            if not is_auton:
+                return
 
         triangulate(tello, field=field)
+        if not is_auton:
+            return
 
         tello.land()
 
@@ -389,28 +418,54 @@ def land_residential(tello: Tello, lock: Lock, field: dict) -> None:
 
         # Make sure it is over the pad
         triangulate(tello, field=field)
+        if not is_auton:
+            return
         loop_down_to_mission_pad(tello, tello.get_mission_pad_id())
+        if not is_auton:
+            return
         triangulate(tello, field=field)
+        if not is_auton:
+            return
 
         tello.move_forward(40)
+        if not is_auton:
+            return
         tello.move_down(RESIDENTIAL_TALL_Y)
+        if not is_auton:
+            return
 
         loop_forward(tello, dist=20, mp=(3 if start_pad == 5 else 4), field=field)
+        if not is_auton:
+            return
 
         triangulate(tello, field=field)
+        if not is_auton:
+            return
 
         loop_forward(tello, dist=20, mp=(1 if start_pad == 5 else 2), field=field)
+        if not is_auton:
+            return
 
         triangulate(tello, field=field)
+        if not is_auton:
+            return
 
         loop_forward(tello, dist=20, mp=(7 if start_pad == 5 else 8), field=field)
+        if not is_auton:
+            return
 
         triangulate(tello, field=field)
+        if not is_auton:
+            return
 
         if tello.get_height() > 20:
             tello.move_down(20)
+            if not is_auton:
+                return
 
         triangulate(tello, field=field)
+        if not is_auton:
+            return
 
         tello.land()
 
@@ -435,6 +490,7 @@ def switch_status(tello: Tello,
     last_button_down_d_pad = 0
     last_button_b = 0
     last_button_x = 0
+    last_right_trigger = 0
 
     while True:
 
@@ -453,9 +509,10 @@ def switch_status(tello: Tello,
             up_pad = controller.UpDPad
             right_pad = controller.RightDPad
             down_pad = controller.DownDPad
+            right_trigger = controller.RightTrigger
+            current_m_id = tello.get_mission_pad_id()
 
             # changes mission type based on buttons pressed
-
             if left_pad == 1 and left_pad != last_button_left_d_pad and not is_auton:
                 m_type = 1
                 mission_picture_1.visible = True
@@ -506,6 +563,32 @@ def switch_status(tello: Tello,
                         daemon=True
                     ).start()
                     time.sleep(1)
+
+            if right_trigger == 1 and right_pad != last_right_trigger and (current_m_id == 5 or current_m_id == 6):
+                is_auton = True
+                if side == "textron":
+
+                    Thread(
+                        target=lambda: land_textron(
+                            tello=tello,
+                            lock=lock,
+                            field=field
+                        ),
+                        daemon=True
+                    ).start()
+                    time.sleep(1)
+                elif side == "residential":
+
+                    Thread(
+                        target=lambda: land_residential(
+                            tello=tello,
+                            lock=lock,
+                            field=field
+                        ),
+                        daemon=True
+                    ).start()
+                    time.sleep(1)
+
             # Sets last buttons for comparison
             last_button_left_d_pad = controller.LeftDPad
             last_button_up_d_pad = controller.UpDPad
@@ -513,6 +596,7 @@ def switch_status(tello: Tello,
             last_button_down_d_pad = controller.DownDPad
             last_button_b = controller.B
             last_button_x = controller.X
+            last_right_trigger = controller.RightTrigger
 
         except Exception as e:
             print(f"{e}")
