@@ -2,8 +2,9 @@ import json
 from guizero import Picture, App
 
 
-def turn_off_all_photos(field: dict):
-    for picture in field.values():
+def turn_off_all_photos(*args):
+    for picture in args:
+        # print(f"func {picture}")
         picture.visible = False
 
 

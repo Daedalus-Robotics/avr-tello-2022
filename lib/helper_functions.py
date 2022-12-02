@@ -34,7 +34,7 @@ def triangulate(t: Tello, field: dict) -> None:
     t.go_xyz_speed_mid(x=0, y=0, z=z_dist, speed=30, mid=_m_id)
 
     # Sets real time location of tello
-    turn_off_all_photos(field)
+    turn_off_all_photos(*field.values())
     if side == "residential" or _m_id == 7 or _m_id == 8:
         field[_m_id].visible = True
     else:
@@ -48,7 +48,7 @@ def loop_forward(tello: Tello, dist: int, mp: int, field: dict) -> None:
         tello.move_forward(dist)
 
     # Sets real time location of tello
-    turn_off_all_photos(field)
+    turn_off_all_photos(*field.values())
     if side == "residential" or mp == 7 or mp == 8:
         field[mp].visible = True
     else:
@@ -423,6 +423,7 @@ def switch_status(tello: Tello,
                   mission_picture_1: Picture,
                   mission_picture_2: Picture,
                   mission_picture_3: Picture,
+                  base_pad: Picture,
                   field: dict) -> None:
     """X to turn on, B to turn off"""
 
@@ -436,13 +437,21 @@ def switch_status(tello: Tello,
     last_button_b = 0
     last_button_x = 0
 
+    print(mission_picture_1)
+    print(mission_picture_2)
+    print(mission_picture_3)
+    print(base_pad)
+
     while True:
 
         try:
-            # print(controller.B)
-            if controller.B == 1 and controller.B != last_button_b and is_auton:
-                print("land")
+            print(f"{controller.B}, {last_button_b}")
+            if controller.B == 1 and controller.B != last_button_b:
+                print("off-autonomy")
                 is_auton = False
+                time.sleep(.3)
+
+            last_button_b = controller.B
 
             # update autonomous text box and mission number
             auton_text.value = f"Autonomous Mode: {is_auton}"
@@ -458,24 +467,29 @@ def switch_status(tello: Tello,
 
             if left_pad == 1 and left_pad != last_button_left_d_pad and not is_auton:
                 m_type = 1
+                turn_off_all_photos(mission_picture_2, mission_picture_3, base_pad)
                 mission_picture_1.visible = True
-                mission_picture_2.visible = False
-                mission_picture_3.visible = False
+
             if up_pad == 1 and up_pad != last_button_up_d_pad and not is_auton:
                 m_type = 2
-                mission_picture_1.visible = False
+                turn_off_all_photos(mission_picture_1, mission_picture_3, base_pad)
                 mission_picture_2.visible = True
-                mission_picture_3.visible = False
+
             if right_pad == 1 and right_pad != last_button_right_d_pad and not is_auton:
                 m_type = 3
-                mission_picture_1.visible = False
-                mission_picture_2.visible = False
+                turn_off_all_photos(mission_picture_1, mission_picture_2, base_pad)
                 mission_picture_3.visible = True
+
             if down_pad == 1 and down_pad != last_button_down_d_pad and not is_auton:
                 m_type = -1
-                mission_picture_1.visible = False
-                mission_picture_2.visible = False
-                mission_picture_3.visible = False
+                turn_off_all_photos(mission_picture_1, mission_picture_2, mission_picture_3, base_pad)
+                base_pad.visible = True
+
+            # Sets last buttons for comparison
+            last_button_left_d_pad = controller.LeftDPad
+            last_button_up_d_pad = controller.UpDPad
+            last_button_right_d_pad = controller.RightDPad
+            last_button_down_d_pad = controller.DownDPad
 
             # As long as a mission (1-3) is selected it activates autonomy
             if m_type == -1:
@@ -506,12 +520,7 @@ def switch_status(tello: Tello,
                         daemon=True
                     ).start()
                     time.sleep(1)
-            # Sets last buttons for comparison
-            last_button_left_d_pad = controller.LeftDPad
-            last_button_up_d_pad = controller.UpDPad
-            last_button_right_d_pad = controller.RightDPad
-            last_button_down_d_pad = controller.DownDPad
-            last_button_b = controller.B
+
             last_button_x = controller.X
 
         except Exception as e:
@@ -561,15 +570,14 @@ def tello_control_loop(tello: Tello, controller: XboxController, lock: Lock, bas
 
                 mp = tello.get_mission_pad_id()
 
-                # if mp == -1 and mp != last_mp:
-                #     turn_off_all_photos(field)
-                #     base_pads.visible = True
-
                 if (side == "residential" or mp == 7 or mp == 8) and mp != last_mp:
-                    turn_off_all_photos(field)
+                    turn_off_all_photos(*field.values())
+
                     field[mp].visible = True
                 elif side == "textron" and mp != last_mp:
-                    turn_off_all_photos(field)
+                    turn_off_all_photos(*field.values())
+                    print(mp)
+                    print(m_id_to_field_indices[mp])
                     field[m_id_to_field_indices[mp]].visible = True
 
                 last_mp = mp

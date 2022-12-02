@@ -10,6 +10,7 @@ app = App(title="Daedalus Robotics Tello GUI", layout="auto")
 controller = XboxController()
 tello = Tello()
 field = setup_field(app=app)
+# print(field)
 
 
 # Button Variables
@@ -49,7 +50,7 @@ mission_picture_1 = Picture(
     image=r"assets\mission_1.png",
     width=778,
     height=296,
-    align="top",
+    align="left",
     visible=False
 )
 
@@ -58,7 +59,7 @@ mission_picture_2 = Picture(
     image=r"assets\mission_2.png",
     width=778,
     height=296,
-    align="top",
+    align="left",
     visible=False
 )
 
@@ -67,7 +68,7 @@ mission_picture_3 = Picture(
     image=r"assets\mission_3.png",
     width=778,
     height=296,
-    align="top",
+    align="left",
     visible=False
 )
 
@@ -77,7 +78,7 @@ base_pads_picture = Picture(
     image=r"assets\basepads.png",
     width=778,
     height=296,
-    align="bottom",
+    align="left",
     visible=True
 )
 
@@ -115,6 +116,7 @@ tello_status_thread = Thread(
         mission_picture_1,
         mission_picture_2,
         mission_picture_3,
+        base_pad=base_pads_picture,
         field=field
     ),
     daemon=True
