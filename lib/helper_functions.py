@@ -81,7 +81,14 @@ def textron(tello: Tello, mission_type: int, lock: Lock, field: dict) -> None:
         if not tello.is_flying:
             tello.takeoff()
 
+        triangulate(tello, field)
+
         tello.move_up(TEXTRON_SMALL_Y)
+
+        if not tello.is_flying:
+            tello.takeoff()
+
+        triangulate(tello, field)
 
         # Orient to direction of first building
         if mission_type == 1:
@@ -218,7 +225,14 @@ def residential(tello: Tello, mission_type: int, lock: Lock, field: dict) -> Non
         if not tello.is_flying:
             tello.takeoff()
 
+        triangulate(tello, field)
+
         tello.move_up(RESIDENTIAL_SMALL_Y)
+
+        if not tello.is_flying:
+            tello.takeoff()
+
+        triangulate(tello, field)
 
         if not is_auton:
             return
@@ -436,6 +450,7 @@ def switch_status(tello: Tello,
     last_button_down_d_pad = 0
     last_button_b = 0
     last_button_x = 0
+    last_right_trigger = 0
 
     print(mission_picture_1)
     print(mission_picture_2)
@@ -445,7 +460,7 @@ def switch_status(tello: Tello,
     while True:
 
         try:
-            print(f"{controller.B}, {last_button_b}")
+            # print(f"{controller.B}, {last_button_b}")
             if controller.B == 1 and controller.B != last_button_b:
                 print("off-autonomy")
                 is_auton = False
@@ -469,21 +484,25 @@ def switch_status(tello: Tello,
                 m_type = 1
                 turn_off_all_photos(mission_picture_2, mission_picture_3, base_pad)
                 mission_picture_1.visible = True
+                time.sleep(.3)
 
             if up_pad == 1 and up_pad != last_button_up_d_pad and not is_auton:
                 m_type = 2
                 turn_off_all_photos(mission_picture_1, mission_picture_3, base_pad)
                 mission_picture_2.visible = True
+                time.sleep(.3)
 
             if right_pad == 1 and right_pad != last_button_right_d_pad and not is_auton:
                 m_type = 3
                 turn_off_all_photos(mission_picture_1, mission_picture_2, base_pad)
                 mission_picture_3.visible = True
+                time.sleep(.3)
 
             if down_pad == 1 and down_pad != last_button_down_d_pad and not is_auton:
                 m_type = -1
                 turn_off_all_photos(mission_picture_1, mission_picture_2, mission_picture_3, base_pad)
                 base_pad.visible = True
+                time.sleep(.3)
 
             # Sets last buttons for comparison
             last_button_left_d_pad = controller.LeftDPad
@@ -522,6 +541,31 @@ def switch_status(tello: Tello,
                     time.sleep(1)
 
             last_button_x = controller.X
+
+            if controller.RightTrigger == 1 and controller.RightTrigger != last_right_trigger:
+                is_auton = True
+
+                if side == "textron":
+                    Thread(
+                        target=lambda: land_textron(
+                            tello,
+                            lock=lock,
+                            field=field
+                        ),
+                        daemon=True
+                    ).start()
+                    time.sleep(1)
+                else:
+                    Thread(
+                        target=lambda: land_residential(
+                            tello,
+                            lock=lock,
+                            field=field
+                        ),
+                        daemon=True
+                    ).start()
+                    time.sleep(1)
+
 
         except Exception as e:
             print(f"{e}")
