@@ -27,7 +27,7 @@ def set_side(current: str) -> None:
     side = current
 
 
-def triangulate(t: Tello, field: dict) -> None:
+def align_to_pad(t: Tello, field: dict) -> None:
     z_dist = t.get_mission_pad_distance_z()
 
     _m_id = t.get_mission_pad_id()
@@ -81,14 +81,14 @@ def textron(tello: Tello, mission_type: int, lock: Lock, field: dict) -> None:
         if not tello.is_flying:
             tello.takeoff()
 
-        triangulate(tello, field)
+        align_to_pad(tello, field)
 
         tello.move_up(TEXTRON_SMALL_Y)
 
         if not tello.is_flying:
             tello.takeoff()
 
-        triangulate(tello, field)
+        align_to_pad(tello, field)
 
         # Orient to direction of first building
         if mission_type == 1:
@@ -101,10 +101,10 @@ def textron(tello: Tello, mission_type: int, lock: Lock, field: dict) -> None:
 
         loop_forward(tello, 40, 1, field=field) if mission_type == 1 else loop_forward(tello, 40, 2, field=field)
 
-        triangulate(tello, field=field)
+        align_to_pad(tello, field=field)
         if not is_auton:
             return
-        triangulate(tello, field=field)
+        align_to_pad(tello, field=field)
         if not is_auton:
             return
 
@@ -128,12 +128,12 @@ def textron(tello: Tello, mission_type: int, lock: Lock, field: dict) -> None:
             if not is_auton:
                 return
 
-        triangulate(tello, field=field)
+        align_to_pad(tello, field=field)
 
         if not is_auton:
             return
 
-        triangulate(tello, field=field)
+        align_to_pad(tello, field=field)
 
         if not is_auton:
             return
@@ -148,12 +148,12 @@ def textron(tello: Tello, mission_type: int, lock: Lock, field: dict) -> None:
             if not is_auton:
                 return
 
-            triangulate(tello, field=field)
+            align_to_pad(tello, field=field)
 
             if not is_auton:
                 return
 
-            triangulate(tello, field=field)
+            align_to_pad(tello, field=field)
 
             if not is_auton:
                 return
@@ -167,12 +167,12 @@ def textron(tello: Tello, mission_type: int, lock: Lock, field: dict) -> None:
             if not is_auton:
                 return
 
-            triangulate(tello, field=field)
+            align_to_pad(tello, field=field)
 
             if not is_auton:
                 return
 
-            triangulate(tello, field=field)
+            align_to_pad(tello, field=field)
 
             if not is_auton:
                 return
@@ -181,13 +181,13 @@ def textron(tello: Tello, mission_type: int, lock: Lock, field: dict) -> None:
         else:
             tello.rotate_counter_clockwise(90)
             loop_forward(tello, 40, 3, field=field)
-            triangulate(tello, field=field)
+            align_to_pad(tello, field=field)
 
             if not is_auton:
                 return
 
             tello.rotate_clockwise(90)
-            triangulate(tello, field=field)
+            align_to_pad(tello, field=field)
 
             if not is_auton:
                 return
@@ -200,12 +200,12 @@ def textron(tello: Tello, mission_type: int, lock: Lock, field: dict) -> None:
                 return
 
             loop_forward(tello, 40, 5, field=field)
-            triangulate(tello, field=field)
+            align_to_pad(tello, field=field)
 
             if not is_auton:
                 return
 
-            triangulate(tello, field=field)
+            align_to_pad(tello, field=field)
 
             if not is_auton:
                 return
@@ -225,14 +225,14 @@ def residential(tello: Tello, mission_type: int, lock: Lock, field: dict) -> Non
         if not tello.is_flying:
             tello.takeoff()
 
-        triangulate(tello, field)
+        align_to_pad(tello, field)
 
         tello.move_up(RESIDENTIAL_SMALL_Y)
 
         if not tello.is_flying:
             tello.takeoff()
 
-        triangulate(tello, field)
+        align_to_pad(tello, field)
 
         if not is_auton:
             return
@@ -247,11 +247,11 @@ def residential(tello: Tello, mission_type: int, lock: Lock, field: dict) -> Non
 
         loop_forward(tello, 40, 1, field=field) if mission_type == 1 else loop_forward(tello, 40, 2, field=field)
 
-        triangulate(tello, field=field)
+        align_to_pad(tello, field=field)
 
         if not is_auton:
             return
-        triangulate(tello, field=field)
+        align_to_pad(tello, field=field)
 
         if not is_auton:
             return
@@ -268,12 +268,12 @@ def residential(tello: Tello, mission_type: int, lock: Lock, field: dict) -> Non
             tello.move_left(20)
             loop_forward(tello, 40, 4, field=field)
 
-        triangulate(tello, field=field)
+        align_to_pad(tello, field=field)
 
         if not is_auton:
             return
 
-        triangulate(tello, field=field)
+        align_to_pad(tello, field=field)
 
         if not is_auton:
             return
@@ -288,12 +288,12 @@ def residential(tello: Tello, mission_type: int, lock: Lock, field: dict) -> Non
                 return
 
             loop_forward(tello, 40, 6, field=field)
-            triangulate(tello, field=field)
+            align_to_pad(tello, field=field)
 
             if not is_auton:
                 return
 
-            triangulate(tello, field=field)
+            align_to_pad(tello, field=field)
 
             if not is_auton:
                 return
@@ -306,12 +306,12 @@ def residential(tello: Tello, mission_type: int, lock: Lock, field: dict) -> Non
                 return
 
             loop_forward(tello, 40, 5, field=field)
-            triangulate(tello, field=field)
+            align_to_pad(tello, field=field)
 
             if not is_auton:
                 return
 
-            triangulate(tello, field=field)
+            align_to_pad(tello, field=field)
 
             if not is_auton:
                 return
@@ -324,7 +324,7 @@ def residential(tello: Tello, mission_type: int, lock: Lock, field: dict) -> Non
                 return
 
             loop_forward(tello, 40, 3, field=field)
-            triangulate(tello, field=field)
+            align_to_pad(tello, field=field)
 
             if not is_auton:
                 return
@@ -334,7 +334,7 @@ def residential(tello: Tello, mission_type: int, lock: Lock, field: dict) -> Non
             if not is_auton:
                 return
 
-            triangulate(tello, field=field)
+            align_to_pad(tello, field=field)
 
             if not is_auton:
                 return
@@ -348,12 +348,12 @@ def residential(tello: Tello, mission_type: int, lock: Lock, field: dict) -> Non
                 return
 
             loop_forward(tello, 40, 5, field=field)
-            triangulate(tello, field=field)
+            align_to_pad(tello, field=field)
 
             if not is_auton:
                 return
 
-            triangulate(tello, field=field)
+            align_to_pad(tello, field=field)
 
             if not is_auton:
                 return
@@ -369,29 +369,29 @@ def land_textron(tello: Tello, lock: Lock, field: dict) -> None:
         start_pad = tello.get_mission_pad_id()
 
         # Make sure it is over the pad
-        triangulate(tello, field=field)
+        align_to_pad(tello, field=field)
         loop_down_to_mission_pad(tello, tello.get_mission_pad_id())
-        triangulate(tello, field=field)
+        align_to_pad(tello, field=field)
 
         tello.move_forward(40)
         tello.move_down(TEXTRON_TALL_Y)
 
         loop_forward(tello, dist=20, mp=(3 if start_pad == 5 else 4), field=field)
 
-        triangulate(tello, field=field)
+        align_to_pad(tello, field=field)
 
         loop_forward(tello, dist=20, mp=(1 if start_pad == 5 else 2), field=field)
 
-        triangulate(tello, field=field)
+        align_to_pad(tello, field=field)
 
         loop_forward(tello, dist=20, mp=(7 if start_pad == 5 else 8), field=field)
 
-        triangulate(tello, field=field)
+        align_to_pad(tello, field=field)
 
         if tello.get_height() > 20:
             tello.move_down(20)
 
-        triangulate(tello, field=field)
+        align_to_pad(tello, field=field)
 
         tello.land()
 
@@ -402,29 +402,29 @@ def land_residential(tello: Tello, lock: Lock, field: dict) -> None:
         start_pad = tello.get_mission_pad_id()
 
         # Make sure it is over the pad
-        triangulate(tello, field=field)
+        align_to_pad(tello, field=field)
         loop_down_to_mission_pad(tello, tello.get_mission_pad_id())
-        triangulate(tello, field=field)
+        align_to_pad(tello, field=field)
 
         tello.move_forward(40)
         tello.move_down(RESIDENTIAL_TALL_Y)
 
         loop_forward(tello, dist=20, mp=(3 if start_pad == 5 else 4), field=field)
 
-        triangulate(tello, field=field)
+        align_to_pad(tello, field=field)
 
         loop_forward(tello, dist=20, mp=(1 if start_pad == 5 else 2), field=field)
 
-        triangulate(tello, field=field)
+        align_to_pad(tello, field=field)
 
         loop_forward(tello, dist=20, mp=(7 if start_pad == 5 else 8), field=field)
 
-        triangulate(tello, field=field)
+        align_to_pad(tello, field=field)
 
         if tello.get_height() > 20:
             tello.move_down(20)
 
-        triangulate(tello, field=field)
+        align_to_pad(tello, field=field)
 
         tello.land()
 
